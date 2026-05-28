@@ -33,3 +33,46 @@ CREATE TABLE IF NOT EXISTS empresas(
     CONSTRAINT pk_empresas PRIMARY KEY (id),
     CONSTRAINT fk_empresas_direcciones FOREIGN KEY (id_direcciones) REFERENCES direcciones(id)
 );
+
+CREATE TABLE IF NOT EXISTS tipo_cliente(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    tipo_cliente VARCHAR(20) NOT NULL,
+    descripcion_tipo_cliente VARCHAR(255) NULL,
+
+    CONSTRAINT pk_tipo_cliente PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS clientes(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    nombre_ciente VARCHAR(100) NOT NULL,
+    rut_cliente VARCHAR(12) NOT NULL UNIQUE,
+    id_direccion_cliente INTEGER NULL,
+    telefono_cliente VARCHAR(15) NULL,
+    correo_cliente VARCHAR(255) NULL,
+    fecha_naicmiento DATE NOT NULL,
+    id_tipo_cliente INTEGER NOT NULL DEFAULT 1,
+
+    CONSTRAINT pk_clientes PRIMARY KEY (id),
+    CONSTRAINT fk_clientes_direcciones FOREIGN kEY (id_direccion_cliente) REFERENCES direcciones(id),
+    CONSTRAINT fk_clientes_tipos_clientes FOREIGN kEY (id_tipo_cliente) REFERENCES tipo_cliente(id)
+
+
+);
+
+CREATE TABLE IF NOT EXISTS tipo_producto(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    tipo_producto VARCHAR(255),
+    descricion_tipo_producto VARCHAR(255) NULL,
+
+    CONSTRAINT pk_tipos_productos PRIMARY KEY (id)
+
+
+);
+
+CREATE TABLE IF NOT EXISTS producto(
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    nombre_producto VARCHAR(255) NOT NULL,
+    tipo_producto VARCHAR(255)
+
+
+);
