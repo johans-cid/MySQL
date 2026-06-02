@@ -71,8 +71,20 @@ CREATE TABLE IF NOT EXISTS tipo_producto(
 
 CREATE TABLE IF NOT EXISTS producto(
     id INTEGER NOT NULL AUTO_INCREMENT,
+    sku_producto VARCHAR(12) NOT NULL,
     nombre_producto VARCHAR(255) NOT NULL,
-    tipo_producto VARCHAR(255)
+    id_tipo_producto INTEGER NOT NULL,
+    descripcion VARCHAR(255) NULL,
+    precio DECIMAL NOT NULL,
+    fechas_caducidad DATE NULL,
+
+    CONSTRAINT pk_productos PRIMARY KEY (id)
+    CONSTRAINT fk_productos_tipos_productos FOREIGN KEY (id_tipo_producto) REFERENCES tipo_producto(id)
+
+);
+
+CREATE TABLE IF NOT EXISTS inventario(
+
 
 
 );
