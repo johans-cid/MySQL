@@ -1,45 +1,61 @@
--- comentario de 1 linea
-/**
-Comentario de multiples lineas
-**/
--- DDl es un acronimo de Data Definition Language
-CREATE DATABASE IF NOT EXISTS ventas;
-USE ventas;
+CREATE DATABASE IF NOT EXISTS Clase2;
 
---EMPRESA, CLIENTE, PRODUCTO, VENTA, DIRECCION, STOCK
+USE Clase2;
 
---El comadno SQL para crear una tabla es CREATE TABLE nombre_tabla()
-
-CREATE TABLE IF NOT EXISTS direcciones(
-    -- Dentro de la tabla definimos campos, tipos de datos y 
-    -- restricciones (Obligatoriedad de datos, claves primarias y foraneas)
-    id_direccion INTEGER NOT NULL AUTO_INCREMENT,
-    comuna VARCHAR(20) NOT NULL,
-    calle VARCHAR(50) NULL,
-    numero VARCHAR(10) NULL DEFAULT 's/n',
-    departamento VARCHAR(10) NULL,
-
-    CONSTRAINT pk_direcciones PRIMARY KEY (id_direccion)
+CREATE TABLE IF NOT EXISTS regiones(
+	IDREG INT AUTO_INCREMENT,
+    NOMREG VARCHAR(20) NOT NULL,
+    
+    CONSTRAINT pk_regiones PRIMARY KEY (IDREG)
 );
 
-CREATE TABLE IF NOT EXISTS empresas(
-    id_empresas INTEGER NOT NULL AUTO_INCREMENT,
-    razon_social VARCHAR(100) NOT NULL,
-    rut VARCHAR(12) NULL UNIQUE,
-    giro_comercial VARCHAR(255) NOT NULL,
-    id_direcciones INTEGER NULL,
-    telefono_contacto VARCHAR(15) NOT NULL,
-    correo_contacto VARCHAR(255) NOT NULL,
-
-    CONSTRAINT pk_empresas PRIMARY KEY (id_empresas),
-    CONSTRAINT fk_empresas_direcciones FOREIGN KEY (id_direcciones) REFERENCES direcciones(id_direccion)
-
+CREATE TABLE IF NOT EXISTS formapago(
+	IDFORMA INT AUTO_INCREMENT,
+	DETALLE VARCHAR(18),
+	
+	CONSTRAINT pk_formapago PRIMARY KEY (IDFORMA)
 );
 
-ALTER TABLE empresas CHANGE id_empresas id_empresa INTEGER NOT NULL AUTO_INCREMENT;
-ALTER TABLE empresas CHANGE rut rut VARCHAR(12) NOT NULL UNIQUE;
-ALTER TABLE empresas CHANGE telefono_contacto telefono_contacto VARCHAR(15) NULL;
-ALTER TABLE empresas CHANGE correo_contacto correo_contacto VARCHAR(255) NULL;
+CREATE TABLE IF NOT EXISTS ciudades(
+	IDCIU INT AUTO_INCREMENT,
+	NOMCIU VARCHAR(20),
+	FKIDREG INT,
+	
+	CONSTRAINT pk_ciudad PRIMARY KEY (IDCIU),
+	CONSTRAINT fk_formapago_regiones FOREIGN KEY (FKIDREG) REFERENCES regiones(IDREG)
+	
+);
 
+CREATE TABLE IF NOT EXISTS servicios(
+	IDSER INT AUTO_INCREMENT,
+	NOMSER VARCHAR(20),
+	VALORMES INT,
+	
+	CONSTRAINT pk_servicios PRIMARY KEY (IDSER)
+);
 
+CREATE TABLE IF NOT EXISTS clientes(
+	IDRUT INT AUTO_INCREMENT,
+	APEPAT VARCHAR(20),
+	APEMAT VARCHAR(20),
+	NOMBRES VARCHAR(25),
+	DIRECC VARCHAR(30),
+	FKIDCIU INT,
+	
+	CONSTRAINT pk_clientes PRIMARY KEY (IDRUT),
+	CONSTRAINT pk_clientes_ciudades FOREIGN KEY (FKIDCIU) REFERENCES ciudades(IDCIU)
+);
 
+CREATE TABLE IF NOT EXISTS pagos(
+	IDPAGO INT AUTO_INCREMENT,
+	FECHA DATE,
+	TOTAL INT,
+	FKIDRUT INT,
+	FKIDFORMA INT,
+	FKIDSER INT,
+	
+	CONSTRAINT pk_pagos PRIMARY KEY (IDPAGO),
+	CONSTRAINT fk_pagos_clientes FOREIGN KEY (FKIDRUT) REFERENCES clientes(IDRUT),
+	CONSTRAINT fk_pagos_formapago FOREIGN KEY (FKIDFORMA) REFERENCES formapago(IDFORMA),
+	CONSTRAINT fk_pago_servicios FOREIGN KEY (FKIDSER) REFERENCES servicios(IDSER)
+);
