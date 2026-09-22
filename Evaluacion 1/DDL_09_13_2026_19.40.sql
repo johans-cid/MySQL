@@ -1,8 +1,8 @@
-CREATE USER 'cid'@'localhost' IDENTIFIED BY '1234';
+CREATE USER "cid"@"localhost" IDENTIFIED BY "1234";
 
 CREATE DATABASE bd_cid;
 
-GRANT ALL PRIVILEGES ON bd_cid.* TO 'cid'@'localhost';
+GRANT ALL PRIVILEGES ON bd_cid.* TO "cid"@"localhost";
 FLUSH PRIVILEGES;
 
 SELECT User, Host FROM mysql.user WHERE User = 'cid';
